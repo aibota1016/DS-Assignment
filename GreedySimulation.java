@@ -2,15 +2,10 @@
 import java.util.ArrayList;
 
 /*
-Personal Notes:
-The vehicle must always return to the depot in the end. /
+Update Notes:
+24/5 - Changed the sorting portion into a faster implementation (line 56-61).
 
-Path Conditions:
-Must be lowest cost (flexible). /
-Must not exceed max load. /
-Must not be visited. /
-
-Notes for Group Mates:
+Other Notes:
 The pathList is not private, so you can easily access it.
 */
 
@@ -58,19 +53,14 @@ public class GreedySimulation<T extends Comparable<T>> {
                 continue look;
             }
 
-            //bubble sort the leftover nodes
+            //find lowest cost node
+            T lowestCost = currentNeighbours.get(0);
             for (int i=0; i<currentNeighbours.size()-1; i++) {
-                for (int j=0; j<currentNeighbours.size()-1-i; j++) {
-                    if (input.calculateCost(current, currentNeighbours.get(j)) > input.calculateCost(current, currentNeighbours.get(j+1))) {
-                        T hold = currentNeighbours.get(j);
-                        currentNeighbours.set(j, currentNeighbours.get(j+1));
-                        currentNeighbours.set(j+1, hold);
-                    }
-                }
+                if(input.calculateCost(current, lowestCost) > input.calculateCost(current, currentNeighbours.get(i+1)))
+                    lowestCost = currentNeighbours.get(i+1);
             }
             
             //go to the lowest cost node
-            T lowestCost = currentNeighbours.get(0);
             path.add(lowestCost);
             demandCount += input.getDemandSize(lowestCost);
             current = lowestCost;
