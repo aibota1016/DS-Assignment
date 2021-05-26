@@ -185,7 +185,12 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
         return list;
     }
     
-    public double calculateCost(T src, T dest) {
+    /**
+     * @param src - source vertex
+     * @param dest - destination vertex
+     * @return calculation of distance between two points using Euclidean distance formula
+     */
+    public double calculateDistance(T src, T dest) {
         int x1 = getXCor(src);
         int x2 = getXCor(dest);
         int y1 = getYCor(src);
@@ -194,15 +199,62 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
         return Math.sqrt(d);
     }
     
-    public double calculateTour(int c, int[] arr) {
-      //In progress
+    /**
+     * @param arr - the route of one vehicle
+     * @return calculation of the tour cost, and capacity of one vehicle
+     */
+    public double calculateCost(int[] arr) {
+        ArrayList<T> vertices = new ArrayList<>();
+        int[] demands = new int[arr.length];
+        int n=arr.length;
+        for (int a=0; a<arr.length; a++) {
+            vertices.add(getVertex(arr[a]));  //converts array elements to a vertex, and stores in arraylist
+            demands[a] = getDemandSize(getVertex(arr[a])); //stores the demand size of each vertex in array
+            if (a!= (n-1))
+                System.out.print(arr[a] + " -> "); //printing out the path
+            else {
+                System.out.print(arr[a]);
+            }
+        }
+        System.out.println("");
+        double tour = 0; //tour cost of each vehicle
+        int capacity = 0; //capacity of each vehicle
+        int i=0;
+        int j=1;      
+        //calculates tour cost of each vehicle
+        while(i<(n-1)) {
+            tour += calculateDistance(vertices.get(i), vertices.get(j));
+            i++;
+            j++;
+        }
+        //calculates capacity of each vehicle
+        for (int a=0; a<demands.length; a++) {
+            capacity+=demands[a];
+        }
+        System.out.println("Capacity: " + capacity);
+        System.out.println("Cost: " + tour );
+        return tour;
     }
     
-    public int numberOfVehiclesNeeded(ArrayList<Integer> list, int capacity) {
-      //In progress
+    /** Method to calculate total cost and integrates each vehicle tour
+     * If you guys want to test out your simulation results, can use this method
+     * @param arr - 2D array returned by the algorithms
+     * @return the total tour cost
+     */
+    public double calculateTour(int[][] arr) {
+        System.out.println("Tour");
+        int n = arr.length; //equals to the number of vehicles needed
+        double totalTourCost = 0; //total tour cost
+        int i=0;
+        for (int j=0; j<arr[i].length; j++) {
+            System.out.println("Vehicle " + (j+1));
+            totalTourCost+= calculateCost(arr[j]);
+        }
+        System.out.print("Tour Cost: ");
+        return totalTourCost;
     }
-    
-    
+
+
     public void printEdges() {
         Vertex<T,N> temp = head;
         while(temp!=null) {
