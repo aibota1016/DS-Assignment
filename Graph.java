@@ -246,7 +246,7 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
         int n = arr.length; //equals to the number of vehicles needed
         double totalTourCost = 0; //total tour cost
         int i=0;
-        for (int j=0; j<arr[i].length; j++) {
+        for (int j=0; j<n; j++) {
             System.out.println("Vehicle " + (j+1));
             totalTourCost+= calculateCost(arr[j]);
         }
