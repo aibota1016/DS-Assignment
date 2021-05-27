@@ -68,6 +68,18 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
         return -1;
    }
     
+    public int getID(T v) {
+        if (hasVertex(v) == true) {
+            Vertex<T,N> temp = head;
+            while(temp!= null) {
+                if (temp.vertexInfo.compareTo(v) ==0)
+                    return Integer.parseInt(temp.vertexInfo.toString());
+                temp =temp.nextVertex;
+            }
+         }
+        return -1;
+    }
+    
     
     public boolean addVertex(T v, int xCor, int yCor, int d) {
         if (hasVertex(v) == false) {
@@ -267,7 +279,6 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
             temp = temp.nextVertex;
         }
     }
-    
     
     
 }
