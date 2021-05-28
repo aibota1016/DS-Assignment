@@ -215,17 +215,17 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
      * @param arr - the route of one vehicle
      * @return calculation of the tour cost, and capacity of one vehicle
      */
-    public double calculateCost(int[] arr) {
+    public double calculateCost(ArrayList<String> arr) {
         ArrayList<T> vertices = new ArrayList<>();
-        int[] demands = new int[arr.length];
-        int n=arr.length;
-        for (int a=0; a<arr.length; a++) {
-            vertices.add(getVertex(arr[a]));  //converts array elements to a vertex, and stores in arraylist
-            demands[a] = getDemandSize(getVertex(arr[a])); //stores the demand size of each vertex in array
+        int n=arr.size();
+        int[] demands = new int[n];
+        for (int a=0; a<n; a++) {
+            vertices.add(getVertex(Integer.valueOf(arr.get(a))));  //converts array elements to a vertex, and stores in arraylist
+            demands[a] = getDemandSize(getVertex(Integer.valueOf(arr.get(a)))); //stores the demand size of each vertex in array
             if (a!= (n-1))
-                System.out.print(arr[a] + " -> "); //printing out the path
+                System.out.print(arr.get(a) + " -> "); //printing out the path
             else {
-                System.out.print(arr[a]);
+                System.out.print(arr.get(a));
             }
         }
         System.out.println("");
@@ -253,13 +253,13 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
      * @param arr - 2D array returned by the algorithms
      * @return the total tour cost
      */
-    public double calculateTour(int[][] arr) {
+    public double calculateTour(ArrayList<ArrayList<String>> arr) {
         System.out.println("Tour");
-        int n = arr.length; //equals to the number of vehicles needed
+        int n = arr.size(); //equals to the number of vehicles needed
         double totalTourCost = 0; //total tour cost
         for (int j=0; j<n; j++) {
             System.out.println("Vehicle " + (j+1));
-            totalTourCost+= calculateCost(arr[j]);
+            totalTourCost+= calculateCost(arr.get(j));
         }
         System.out.print("Tour Cost: ");
         return totalTourCost;
@@ -279,6 +279,7 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
             temp = temp.nextVertex;
         }
     }
+    
     
     
 }
