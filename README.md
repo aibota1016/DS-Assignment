@@ -9,8 +9,6 @@ Some explanations for the graph class:
 2. calculateCost(ArrayList) - is used to calculate and print the tour cost, and capacity of one vehicle
 3. calculateTour(2D ArrayList) - calculates and prints total tour cost including everything.
 - if you want to test out our program, pass your algorithm output to this method
-- example:  GreedySimulation greedy = new GreedySimulation(graph, C);
-            System.out.println(graph.calculateTour(greedy.pathList));
 
 Relevant Links:
 - Managerial Report: https://docs.google.com/document/d/18FFoFWfsql1oc23OUqNOomepH0cCRj6fHOozDcHfyQA/edit?usp=sharing
