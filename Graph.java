@@ -1,11 +1,9 @@
-
 package dsassignment;
 
 import java.util.ArrayList;
-import java.util.*;
 
-public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
-    Vertex <T,N> head;
+public class Graph <T extends Comparable<T>> {
+    Vertex <T> head;
     int size;
     
     public Graph() {
@@ -13,17 +11,14 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
         size = 0;
     }
 
-       
-    
-    //get number of vertices
-    public int getSize() {
+    public int getSize() { //equals to the number of nodes
         return size;
     }
     
     public boolean hasVertex(T v) {
         if (head == null)
             return false;
-        Vertex<T,N> temp = head;
+        Vertex<T> temp = head;
         while(temp !=null) {
             if (temp.vertexInfo.compareTo(v) == 0)
                 return true;
@@ -34,7 +29,7 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
     
     public int getXCor(T v) {
         if (hasVertex(v) == true) {
-            Vertex<T,N> temp = head;
+            Vertex<T> temp = head;
             while(temp!= null) {
                 if (temp.vertexInfo.compareTo(v) ==0)
                     return temp.xCor;
@@ -46,7 +41,7 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
 
     public int getYCor(T v) {
         if (hasVertex(v) == true) {
-            Vertex<T,N> temp = head;
+            Vertex<T> temp = head;
             while(temp!= null) {
                 if (temp.vertexInfo.compareTo(v) ==0)
                     return temp.yCor;
@@ -54,11 +49,11 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
             }
          }
         return -1;
-   }
+    }
     
     public int getDemandSize(T v) {
         if (hasVertex(v) == true) {
-            Vertex<T,N> temp = head;
+            Vertex<T> temp = head;
             while(temp!= null) {
                 if (temp.vertexInfo.compareTo(v) ==0)
                     return temp.demand;
@@ -66,29 +61,16 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
             }
          }
         return -1;
-   }
-    
-    public int getID(T v) {
-        if (hasVertex(v) == true) {
-            Vertex<T,N> temp = head;
-            while(temp!= null) {
-                if (temp.vertexInfo.compareTo(v) ==0)
-                    return Integer.parseInt(temp.vertexInfo.toString());
-                temp =temp.nextVertex;
-            }
-         }
-        return -1;
     }
-    
     
     public boolean addVertex(T v, int xCor, int yCor, int d) {
         if (hasVertex(v) == false) {
-            Vertex<T,N> temp = head;
-            Vertex<T,N> newVertex = new Vertex<>(v, null, xCor, yCor, d) ;
+            Vertex<T> temp = head;
+            Vertex<T> newVertex = new Vertex<>(v, null, xCor, yCor, d) ;
             if (head == null)
                 head = newVertex;
             else {
-                Vertex<T,N> previous = head;
+                Vertex<T> previous = head;
                 while(temp != null) {
                     previous = temp;
                     temp = temp.nextVertex;
@@ -105,14 +87,14 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
     public T getVertex(int pos) {
         if (pos>size-1 || pos<0)
             return null;
-        Vertex<T,N> temp = head;
+        Vertex<T> temp = head;
         for (int i=0; i<pos; i++) 
             temp = temp.nextVertex;
         return temp.vertexInfo;
     }
     
     public int getIndex(T v) {
-        Vertex<T,N> temp = head;
+        Vertex<T> temp = head;
         int pos = 0;
         while(temp!=null) {
             if (temp.vertexInfo.compareTo(v) == 0)
@@ -125,7 +107,7 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
         
     public ArrayList<T> getAllVertexObjects() {
         ArrayList<T> list = new ArrayList<>();
-        Vertex <T,N> temp = head;
+        Vertex <T> temp = head;
         while(temp!=null) {
             list.add(temp.vertexInfo);
             temp = temp.nextVertex;
@@ -138,14 +120,14 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
             return false;
         if (!hasVertex(source) || !hasVertex(destination))
             return false;
-        Vertex<T,N> sourceVertex = head;
+        Vertex<T> sourceVertex = head;
         while(sourceVertex != null) {
             if (sourceVertex.vertexInfo.compareTo(source) == 0) {
-                Vertex<T,N> destinationVertex = head;
+                Vertex<T> destinationVertex = head;
                 while(destinationVertex!=null) {
                     if (destinationVertex.vertexInfo.compareTo(destination) == 0) {
-                        Edge<T,N> currentEdge = sourceVertex.firstEdge;
-                        Edge<T,N> newEdge = new Edge<>(destinationVertex, currentEdge);
+                        Edge<T> currentEdge = sourceVertex.firstEdge;
+                        Edge<T> newEdge = new Edge<>(destinationVertex, currentEdge);
                         sourceVertex.firstEdge = newEdge;
                         return true;
                     }
@@ -157,16 +139,15 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
         return false;
     }
     
-   
     public boolean hasEdge(T source, T destination) {
         if (head==null)
             return false;
         if (!hasVertex(source) || !hasVertex(destination))
             return false;
-        Vertex<T,N> sourceVertex = head;
+        Vertex<T> sourceVertex = head;
         while(sourceVertex != null) {
             if (sourceVertex.vertexInfo.compareTo(source) == 0) {
-                Edge<T,N> currentEdge = sourceVertex.firstEdge;
+                Edge<T> currentEdge = sourceVertex.firstEdge;
                 while(currentEdge != null) {
                     if (currentEdge.toVertex.vertexInfo.compareTo(destination) == 0)
                         return true;
@@ -178,15 +159,14 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
         return false;
     }
     
-    
     public ArrayList<T> getNeighbours(T v) {
         if (!hasVertex(v))
             return null;
         ArrayList<T> list = new ArrayList<>();
-        Vertex<T,N> temp = head;
+        Vertex<T> temp = head;
         while(temp!=null) {
             if (temp.vertexInfo.compareTo(v) == 0) {
-                Edge<T,N> currentEdge = temp.firstEdge;
+                Edge<T> currentEdge = temp.firstEdge;
                 while(currentEdge!=null) {
                     list.add(currentEdge.toVertex.vertexInfo);
                     currentEdge = currentEdge.nextEdge;
@@ -197,80 +177,63 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
         return list;
     }
     
-    /**
-     * @param src - source vertex
-     * @param dest - destination vertex
-     * @return calculation of distance between two points using Euclidean distance formula
-     */
-    public double calculateDistance(T src, T dest) {
+    public double calculateDistance(T src, T dest) { //euclidean distance between two points
         int x1 = getXCor(src);
         int x2 = getXCor(dest);
         int y1 = getYCor(src);
         int y2 = getYCor(dest);
         double d = Math.pow((x2-x1), 2) + Math.pow((y2-y1), 2);
         return Math.sqrt(d);
-    }
+    }    
     
-    /**
-     * @param arr - the route of one vehicle
-     * @return calculation of the tour cost, and capacity of one vehicle
-     */
-    public double calculateCost(ArrayList<String> arr) {
-        ArrayList<T> vertices = new ArrayList<>();
-        int n=arr.size();
-        int[] demands = new int[n];
-        for (int a=0; a<n; a++) {
-            vertices.add(getVertex(Integer.valueOf(arr.get(a))));  //converts array elements to a vertex, and stores in arraylist
-            demands[a] = getDemandSize(getVertex(Integer.valueOf(arr.get(a)))); //stores the demand size of each vertex in array
+    private double calculateCost(ArrayList<T> vertices) { //path cost and demand of one vehicle
+        int n = vertices.size();
+        
+        for (int a=0; a<n; a++) { //prints out the path
             if (a!= (n-1))
-                System.out.print(arr.get(a) + " -> "); //printing out the path
+                System.out.print(vertices.get(a) + " -> ");
             else {
-                System.out.print(arr.get(a));
+                System.out.print(vertices.get(a));
             }
         }
         System.out.println("");
-        double tour = 0; //tour cost of each vehicle
-        int capacity = 0; //capacity of each vehicle
+        
+        double pathCost = 0; //total path cost of a vehicle
+        int vehicleLoad = 0; //total load of a vehicle
         int i=0;
-        int j=1;      
-        //calculates tour cost of each vehicle
-        while(i<(n-1)) {
-            tour += calculateDistance(vertices.get(i), vertices.get(j));
+        int j=1;
+        
+        while(i<(n-1)) { //calculates the pathCost
+            pathCost += calculateDistance(vertices.get(i), vertices.get(j));
             i++;
             j++;
         }
-        //calculates capacity of each vehicle
-        for (int a=0; a<demands.length; a++) {
-            capacity+=demands[a];
+        for (int a=0; a<vertices.size(); a++) { //calculates the vehicleLoad
+            vehicleLoad += getDemandSize(vertices.get(a));
         }
-        System.out.println("Capacity: " + capacity);
-        System.out.println("Cost: " + tour );
-        return tour;
+        
+        System.out.println("Capacity: " + vehicleLoad);
+        System.out.println("Cost: " + pathCost);
+        return pathCost;
     }
     
-    /** Method to calculate total cost and integrates each vehicle tour
-     * If you guys want to test out your simulation results, can use this method
-     * @param arr - 2D array returned by the algorithms
-     * @return the total tour cost
-     */
-    public double calculateTour(ArrayList<ArrayList<String>> arr) {
+    public double calculateTour(ArrayList<ArrayList<T>> arr) { //prints out results of a search
         System.out.println("Tour");
         int n = arr.size(); //equals to the number of vehicles needed
-        double totalTourCost = 0; //total tour cost
+        double tourCost = 0;
         for (int j=0; j<n; j++) {
             System.out.println("Vehicle " + (j+1));
-            totalTourCost+= calculateCost(arr.get(j));
+            tourCost+= calculateCost(arr.get(j));
         }
         System.out.print("Tour Cost: ");
-        return totalTourCost;
+        return tourCost;
     }
-
-
+    
     public void printEdges() {
-        Vertex<T,N> temp = head;
+        Vertex<T> temp = head;
         while(temp!=null) {
             System.out.print("#" + temp.vertexInfo + " : ");
-            Edge<T,N> currentEdge = temp.firstEdge;
+            Edge<T> currentEdge = temp.firstEdge;
             while(currentEdge!=null) {
                 System.out.print("[" + temp.vertexInfo + "," + currentEdge.toVertex.vertexInfo + "] ");
                 currentEdge = currentEdge.nextEdge;
@@ -279,7 +242,4 @@ public class Graph <T extends Comparable<T>, N extends Comparable <N>>{
             temp = temp.nextVertex;
         }
     }
-    
-    
-    
 }
