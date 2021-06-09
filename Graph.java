@@ -51,6 +51,106 @@ public class Graph <T extends Comparable<T>> {
         return -1;
     }
     
+    public double getH(T v) {
+        if (hasVertex(v) == true) {
+            Vertex<T> temp = head;
+            while(temp!= null) {
+                if (temp.vertexInfo.compareTo(v) == 0)
+                    return temp.h;
+                temp =temp.nextVertex;
+            }
+         }
+        return -1;
+    }
+    
+    public double getF(T v) {
+        if (hasVertex(v) == true) {
+            Vertex<T> temp = head;
+            while(temp!= null) {
+                if (temp.vertexInfo.compareTo(v) == 0)
+                    return temp.f;
+                temp =temp.nextVertex;
+            }
+         }
+        return -1;
+    }
+    
+    public double getG(T v) {
+        if (hasVertex(v) == true) {
+            Vertex<T> temp = head;
+            while(temp!= null) {
+                if (temp.vertexInfo.compareTo(v) == 0)
+                    return temp.g;
+                temp =temp.nextVertex;
+            }
+        }
+        return -1;
+    }
+    
+    public T getParent(T v) {
+        if (hasVertex(v) == true) {
+            Vertex<T> temp = head;
+            while(temp!= null) {
+                if (temp.vertexInfo.compareTo(v) == 0)
+                    return temp.parent;
+                temp =temp.nextVertex;
+            }
+        }
+        return null;
+    }
+    
+    public void setH(T v, double h) {
+        if (hasVertex(v) == true) {
+            Vertex<T> temp = head;
+            while(temp!= null) {
+                if (temp.vertexInfo.compareTo(v) == 0) {
+                    temp.h = h;
+                    return;
+                }
+                temp = temp.nextVertex;
+            }
+         }
+    }
+    
+    public void setF(T v, double f) {
+        if (hasVertex(v) == true) {
+            Vertex<T> temp = head;
+            while(temp!= null) {
+                if (temp.vertexInfo.compareTo(v) == 0) {
+                    temp.f = f;
+                    return;
+                }
+                temp = temp.nextVertex;
+            }
+         }
+    }
+    
+    public void setG(T v, double g) {
+        if (hasVertex(v) == true) {
+            Vertex<T> temp = head;
+            while(temp!= null) {
+                if (temp.vertexInfo.compareTo(v) == 0) {
+                    temp.g = g;
+                    return;
+                }
+                temp = temp.nextVertex;
+            }
+         }
+    }
+    
+    public void setParent(T v, T parent) {
+        if (hasVertex(v) == true) {
+            Vertex<T> temp = head;
+            while(temp!= null) {
+                if (temp.vertexInfo.compareTo(v) == 0) {
+                    temp.parent = parent;
+                    return;
+                }
+                temp = temp.nextVertex;
+            }
+        }
+    }
+    
     public int getDemandSize(T v) {
         if (hasVertex(v) == true) {
             Vertex<T> temp = head;
