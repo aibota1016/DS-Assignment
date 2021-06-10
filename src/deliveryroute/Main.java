@@ -26,7 +26,7 @@ public class Main extends Application {
     
     static Group root = new Group();
     static Scene scene = new Scene(root, 820, 420);
-    
+    static boolean reset;
     static int N, C;
     static Graph<Integer> graph;
     static ArrayList<Integer> coordinates = new ArrayList<>();
@@ -87,7 +87,7 @@ public class Main extends Application {
         //Drawing Depot Image at 0
         FileInputStream input = null;
         try {
-            input = new FileInputStream("C:\\Users\\hp\\OneDrive\\Documents\\NetBeansProjects\\DeliveryRoute\\src\\deliveryroute\\depot1.png");
+            input = new FileInputStream("C:\\Users\\hp\\OneDrive\\Documents\\NetBeansProjects\\DeliveryRoute\\src\\deliveryroute\\depot.png");
         } catch (FileNotFoundException ex) {
             System.out.println("File Not Found");
         }
@@ -115,39 +115,94 @@ public class Main extends Application {
         Button btnBasicSimulation = new Button("Basic Simulation");
         btnBasicSimulation.setPrefSize(120,12);
         btnBasicSimulation.setLayoutX(15);
-        btnBasicSimulation.setLayoutY(50);
+        btnBasicSimulation.setLayoutY(20);
         btnBasicSimulation.setOnAction((ActionEvent event) -> {
             System.out.println("Hello World!");
         });
-        
+   
         Button btnGreedySimulation = new Button("Greedy Simulation");
         btnGreedySimulation.setPrefSize(120,12);
         btnGreedySimulation.setLayoutX(15);
-        btnGreedySimulation.setLayoutY(100);
+        btnGreedySimulation.setLayoutY(50);
         btnGreedySimulation.setOnAction((ActionEvent event) -> {
             System.out.println("Greedy Simulation");
             GreedySearch<Integer> greedy = new GreedySearch(graph, C);
-            System.out.println(graph.calculateTour(greedy.pathList));
+            graph.setCycleText(greedy.pathList);
+            Graph.textArea.appendText("\nTour Cost: " + graph.calculateTour(greedy.pathList, 0));
         });
         
         Button btnMCTSSimulation = new Button("MCTS Simulation");
         btnMCTSSimulation.setPrefSize(120,12);
         btnMCTSSimulation.setLayoutX(15);
-        btnMCTSSimulation.setLayoutY(150);
+        btnMCTSSimulation.setLayoutY(80);
         btnMCTSSimulation.setOnAction((ActionEvent event) -> {
             System.out.println("MCTS Simulation");
             MCTSSearch<Integer> MCTS = new MCTSSearch(graph, C);
-            System.out.println(graph.calculateTour(MCTS.pathList));
+            graph.setCycleText(MCTS.pathList);
+            Graph.textArea.appendText("\nTour Cost: " + graph.calculateTour(MCTS.pathList, 0));
+        });
+        
+        Button btnAstarSimulation = new Button("A* Simulation");
+        btnAstarSimulation.setPrefSize(120,12);
+        btnAstarSimulation.setLayoutX(15);
+        btnAstarSimulation.setLayoutY(110);
+        btnAstarSimulation.setOnAction((var event) -> {
+            System.out.println("A star Simulation");
+            AStarSearch<Integer> AStar = new AStarSearch(graph, C);
+            graph.setCycleText(AStar.pathList);
+            Graph.textArea.appendText("\nTour Cost: " + graph.calculateTour(AStar.pathList, 0));
+        });
+        
+        
+        //Buttons for Parallel Simulations
+        Button btnBasicParallel = new Button("Basic Parallel");
+        btnBasicParallel.setPrefSize(120,12);
+        btnBasicParallel.setLayoutX(15);
+        btnBasicParallel.setLayoutY(160);
+        btnBasicParallel.setOnAction((ActionEvent event) -> {
+            System.out.println("Hello World!");
+        });
+        
+        Button btnGreedyParallel = new Button("Greedy Parallel");
+        btnGreedyParallel.setPrefSize(120,12);
+        btnGreedyParallel.setLayoutX(15);
+        btnGreedyParallel.setLayoutY(190);
+        btnGreedyParallel.setOnAction((ActionEvent event) -> {
+            System.out.println("Greedy Parallel Simulation");
+            GreedySearch<Integer> greedy = new GreedySearch(graph, C);
+            graph.tourParallel(greedy.pathList);
+        });
+        
+        Button btnMCTSSimulationParallel = new Button("MCTS Parallel");
+        btnMCTSSimulationParallel.setPrefSize(120,12);
+        btnMCTSSimulationParallel.setLayoutX(15);
+        btnMCTSSimulationParallel.setLayoutY(220);
+        btnMCTSSimulationParallel.setOnAction((ActionEvent event) -> {
+            System.out.println("MCTS Parallel Simulation");
+            MCTSSearch<Integer> MCTS = new MCTSSearch(graph, C);
+            graph.tourParallel(MCTS.pathList);
+        });
+        
+        Button btnAstarParallel = new Button("A* Parallel");
+        btnAstarParallel.setPrefSize(120,12);
+        btnAstarParallel.setLayoutX(15);
+        btnAstarParallel.setLayoutY(250);
+        btnAstarParallel.setOnAction((ActionEvent event) -> {
+            System.out.println("A Star Parallel Simulation");
+            AStarSearch<Integer> AStar = new AStarSearch(graph, C);
+            graph.tourParallel(AStar.pathList);
         });
         
         Button btnReset = new Button("Reset"); //resets the graph to its initial look
         btnReset.setPrefSize(120,12);
         btnReset.setLayoutX(15);
-        btnReset.setLayoutY(350);
+        btnReset.setLayoutY(370);
         btnReset.setOnAction((ActionEvent event) -> {
+            reset = true;
             buildGraph();
             Graph.textArea.clear();
             Graph.textArea.setVisible(false);
+            Graph.text.clear();
         });
         
 
@@ -160,13 +215,31 @@ public class Main extends Application {
         rect2.setX(620);
         rect2.setY(0);
         rect2.setFill(Color.rgb(241, 242, 246)); 
+        
+        Graph.textArea.setPrefHeight(420);
+        Graph.textArea.setPrefWidth(200);
+        Graph.textArea.setLayoutX(620);
+        Graph.textArea.setVisible(false);
+        
+        Graph.text.setLayoutX(150);
+        Graph.text.setPrefHeight(20);
+        Graph.text.setPrefWidth(90);
+        Graph.text.setEditable(false);
+        Graph.text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 12));
 
         
         root.getChildren().add(rect);
         root.getChildren().add(rect2);
+        root.getChildren().add(Graph.textArea);
+        root.getChildren().add(Graph.text);
         root.getChildren().add(btnBasicSimulation);
         root.getChildren().add(btnGreedySimulation);
         root.getChildren().add(btnMCTSSimulation);
+        root.getChildren().add(btnAstarSimulation);
+        root.getChildren().add(btnBasicParallel);
+        root.getChildren().add(btnGreedyParallel);
+        root.getChildren().add(btnMCTSSimulationParallel);
+        root.getChildren().add(btnAstarParallel);
         root.getChildren().add(btnReset);
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -182,3 +255,4 @@ public class Main extends Application {
     }
     
 }
+
