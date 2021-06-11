@@ -1,7 +1,7 @@
+package dsassignment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 /*
 Difference with Greedy Search:
@@ -25,7 +25,6 @@ public class AStarSearch<T extends Comparable<T>> {
     }
     
     private void execute() {
-        int vehicle = 1;
         while (!unvisitedNodes.isEmpty()) {
             ArrayList<T> path = new ArrayList<>();
             pathList.add(path);
