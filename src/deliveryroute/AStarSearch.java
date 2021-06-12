@@ -4,6 +4,12 @@ package deliveryroute;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/*
+Difference with Greedy Search:
+- Maintains an openList of all unremoved nodes.
+- Has a heuristic.
+*/
+
 public class AStarSearch<T extends Comparable<T>> {
     Graph<T> graph;
     int vehicleCapacity;
@@ -20,7 +26,6 @@ public class AStarSearch<T extends Comparable<T>> {
     }
     
     private void execute() {
-        //int vehicle = 1;
         while (!unvisitedNodes.isEmpty()) {
             ArrayList<T> path = new ArrayList<>();
             pathList.add(path);
