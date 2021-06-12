@@ -27,6 +27,7 @@ public class Main extends Application {
     static Group root = new Group();
     static Scene scene = new Scene(root, 820, 420);
     static boolean reset;
+    static boolean play;
     static int N, C;
     static Graph<Integer> graph;
     static ArrayList<Integer> coordinates = new ArrayList<>();
@@ -105,8 +106,6 @@ public class Main extends Application {
         root.getChildren().add(label);
     }
     
-    
-    
 
     
     @Override
@@ -117,7 +116,11 @@ public class Main extends Application {
         btnBasicSimulation.setLayoutX(15);
         btnBasicSimulation.setLayoutY(20);
         btnBasicSimulation.setOnAction((ActionEvent event) -> {
-            System.out.println("Hello World!");
+            System.out.println("Basic Simulation");
+            BFSSearch<Integer> basic = new BFSSearch(graph, C);
+            graph.setCycleText(basic.pathList);
+            Graph.textArea.appendText("\nTour Cost: " + graph.calculateTour(basic.pathList, 0));
+            reset = false;
         });
    
         Button btnGreedySimulation = new Button("Greedy Simulation");
@@ -129,6 +132,7 @@ public class Main extends Application {
             GreedySearch<Integer> greedy = new GreedySearch(graph, C);
             graph.setCycleText(greedy.pathList);
             Graph.textArea.appendText("\nTour Cost: " + graph.calculateTour(greedy.pathList, 0));
+            reset = false;
         });
         
         Button btnMCTSSimulation = new Button("MCTS Simulation");
@@ -140,6 +144,7 @@ public class Main extends Application {
             MCTSSearch<Integer> MCTS = new MCTSSearch(graph, C);
             graph.setCycleText(MCTS.pathList);
             Graph.textArea.appendText("\nTour Cost: " + graph.calculateTour(MCTS.pathList, 0));
+            reset = false;
         });
         
         Button btnAstarSimulation = new Button("A* Simulation");
@@ -151,16 +156,20 @@ public class Main extends Application {
             AStarSearch<Integer> AStar = new AStarSearch(graph, C);
             graph.setCycleText(AStar.pathList);
             Graph.textArea.appendText("\nTour Cost: " + graph.calculateTour(AStar.pathList, 0));
+            reset = false;
         });
         
         
-        //Buttons for Parallel Simulations
+        //Buttons for controlling Parallel Simulations
         Button btnBasicParallel = new Button("Basic Parallel");
         btnBasicParallel.setPrefSize(120,12);
         btnBasicParallel.setLayoutX(15);
         btnBasicParallel.setLayoutY(160);
         btnBasicParallel.setOnAction((ActionEvent event) -> {
-            System.out.println("Hello World!");
+            System.out.println("Basic Parallel Simulation");
+            BFSSearch<Integer> basic = new BFSSearch(graph, C);
+            graph.tourParallel(basic.pathList);
+            reset = false;
         });
         
         Button btnGreedyParallel = new Button("Greedy Parallel");
@@ -171,6 +180,7 @@ public class Main extends Application {
             System.out.println("Greedy Parallel Simulation");
             GreedySearch<Integer> greedy = new GreedySearch(graph, C);
             graph.tourParallel(greedy.pathList);
+            reset = false;
         });
         
         Button btnMCTSSimulationParallel = new Button("MCTS Parallel");
@@ -181,6 +191,7 @@ public class Main extends Application {
             System.out.println("MCTS Parallel Simulation");
             MCTSSearch<Integer> MCTS = new MCTSSearch(graph, C);
             graph.tourParallel(MCTS.pathList);
+            reset = false;
         });
         
         Button btnAstarParallel = new Button("A* Parallel");
@@ -191,6 +202,7 @@ public class Main extends Application {
             System.out.println("A Star Parallel Simulation");
             AStarSearch<Integer> AStar = new AStarSearch(graph, C);
             graph.tourParallel(AStar.pathList);
+            reset = false;
         });
         
         Button btnReset = new Button("Reset"); //resets the graph to its initial look
@@ -255,4 +267,3 @@ public class Main extends Application {
     }
     
 }
-
