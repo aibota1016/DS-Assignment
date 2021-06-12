@@ -5,6 +5,12 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 public class MCTSSearch <T extends Comparable<T>> {
 
@@ -29,7 +35,9 @@ public class MCTSSearch <T extends Comparable<T>> {
         this.vehicleCapacity = vehicleCapacity;
         unvisitedNodes = graph.getNeighbours(graph.getVertex(0)); //store customers in a list
         startTime = Instant.now(); //start timer
+        System.out.print("Time elapsed: |");
         pathList = search(level, iterations); //execute the simulation
+        //System.out.println("| " + Duration.between(startTime, Instant.now()).toSeconds() + "s (Searching is forced to stop!)");
     }
 
     private ArrayList<ArrayList<T>> search(int level, int iterations) {
@@ -38,6 +46,7 @@ public class MCTSSearch <T extends Comparable<T>> {
             return rollout();
         } else {
             policy[level-1] = globalPolicy;
+            int count = 1;
             for (int i=0; i<iterations; i++) {
                 ArrayList<ArrayList<T>> new_tour = search(level - 1, iterations);
                 if (getTourCost(new_tour) < getTourCost(best_tour)) {
@@ -48,13 +57,26 @@ public class MCTSSearch <T extends Comparable<T>> {
                     best_tour = new_tour;
                     adapt(best_tour, level);
                 }
-                if (Duration.between(startTime, Instant.now()).toMinutes()>1) { //end if more than 1 minute
+                if (Duration.between(startTime, Instant.now()).toMinutes() > 1) { //end if more than 1 minute
                     return best_tour;
+                } else if (Duration.between(startTime, Instant.now()).toMinutes() < 1) {  //print out progress bar
+                    try {
+                        Thread.sleep(1000);
+                        System.out.print("\rTime elapsed: |");
+                        String s = "=";
+                        System.out.print(s.repeat(count) + " | ");
+                        System.out.print(count + "s");
+                        if (count == 60) {
+                                System.out.print(" (Searching is forced to stop!)");
+                        }
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(MCTSSearch.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
+                count++;
             }
             globalPolicy = policy[level-1];
         }
-
         return best_tour;
     }
 
